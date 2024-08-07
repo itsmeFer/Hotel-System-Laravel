@@ -1,45 +1,30 @@
 @extends('layout')
 
 @section('content')
-    <h1 class="mb-4">Rooms</h1>
-    @if(auth()->user()->role === 'admin')
-        <a href="{{ route('rooms.create') }}" class="btn btn-primary mb-3">Add Room</a>
-    @endif
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Number</th>
-                <th>Type</th>
-                <th>Price</th>
-                <th>Availability</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <h1>Available Rooms</h1>
+
+    @if($rooms->isEmpty())
+        <p>No rooms available.</p>
+    @else
+        <div class="row">
             @foreach ($rooms as $room)
-                <tr>
-                    <td>{{ $room->number }}</td>
-                    <td>{{ $room->type }}</td>
-                    <td>{{ $room->price }}</td>
-                    <td>{{ $room->is_available ? 'Available' : 'Booked' }}</td>
-                    <td>
-                        <a href="{{ route('rooms.show', $room) }}" class="btn btn-info btn-sm">View</a>
-                        @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('rooms.edit', $room) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('rooms.destroy', $room) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        @elseif($room->is_available)
-                            <form action="{{ route('rooms.book', $room) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-success btn-sm">Book</button>
-                            </form>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        @if($room->image)
+                            <img src="{{ asset('storage/' . $room->image) }}" class="card-img-top" alt="Room Image">
+                        @else
+                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="No Image Available">
                         @endif
-                    </td>
-                </tr>
+                        <div class="card-body">
+                            <h5 class="card-title">Room {{ $room->number }}</h5>
+                            <p class="card-text">Type: {{ $room->type }}</p>
+                            <p class="card-text">Price: ${{ $room->price }}</p>
+                            <p class="card-text">Status: {{ $room->is_available ? 'Available' : 'Booked' }}</p>
+                            <a href="{{ route('rooms.show', $room->id) }}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
             @endforeach
-        </tbody>
-    </table>
+        </div>
+    @endif
 @endsection

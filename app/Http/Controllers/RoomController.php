@@ -13,6 +13,18 @@ class RoomController extends Controller
         return view('rooms.index', compact('rooms'));
     }
 
+    public function sort(Request $request)
+    {
+        $type = $request->input('type');
+        if ($type) {
+            $rooms = Room::where('type', $type)->get();
+        } else {
+            $rooms = Room::all();
+        }
+
+        return view('rooms.index', compact('rooms'));
+    }
+
     public function show(Room $room)
     {
         return view('rooms.show', compact('room'));

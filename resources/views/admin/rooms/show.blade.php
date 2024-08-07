@@ -19,5 +19,5 @@
         </div>
     </div>
 
-    <a href="{{ route('rooms.index') }}" class="btn btn-primary mt-3">Back to Rooms</a>
+    <a href="{{ route('admin.rooms.index') }}" class="btn btn-primary mt-3">Back to Rooms</a>
 @endsection

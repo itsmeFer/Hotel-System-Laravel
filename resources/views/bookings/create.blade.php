@@ -1,0 +1,29 @@
+@extends('layout')
+
+@section('content')
+    <h1>Book Room: {{ $room->number }}</h1>
+    <form action="{{ route('bookings.store', $room) }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="check_in">Check In</label>
+            <input type="date" name="check_in" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="check_out">Check Out</label>
+            <input type="date" name="check_out" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Book</button>
+    </form>
+@endsection
