@@ -9,10 +9,11 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'number',
-        'type',
-        'price',
-        'is_available',
-    ];
+    protected $fillable = ['number', 'type', 'price', 'is_available'];
+
+    public function book()
+    {
+        $this->is_available = false;
+        $this->save();
+    }
 }

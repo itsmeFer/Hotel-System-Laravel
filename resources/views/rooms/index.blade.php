@@ -21,7 +21,7 @@
                     <td>{{ $room->number }}</td>
                     <td>{{ $room->type }}</td>
                     <td>{{ $room->price }}</td>
-                    <td>{{ $room->is_available ? 'Available' : 'Not Available' }}</td>
+                    <td>{{ $room->is_available ? 'Available' : 'Booked' }}</td>
                     <td>
                         <a href="{{ route('rooms.show', $room) }}" class="btn btn-info btn-sm">View</a>
                         @if(auth()->user()->role === 'admin')
@@ -30,6 +30,11 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        @elseif($room->is_available)
+                            <form action="{{ route('rooms.book', $room) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm">Book</button>
                             </form>
                         @endif
                     </td>

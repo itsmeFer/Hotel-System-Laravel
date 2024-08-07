@@ -107,3 +107,22 @@ Route::post('/register', [AuthenticatedSessionController::class, 'register'])->m
 Route::middleware(['auth'])->group(function () {
     Route::resource('rooms', RoomController::class);
 });
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
+
+Route::get('/register', [AuthenticatedSessionController::class, 'showRegistrationForm'])->middleware('guest')->name('register');
+Route::post('/register', [AuthenticatedSessionController::class, 'register'])->middleware('guest');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('rooms', RoomController::class);
+    Route::post('/rooms/{room}/book', [RoomController::class, 'book'])->name('rooms.book');
+});

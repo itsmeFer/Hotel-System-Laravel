@@ -13,6 +13,11 @@ class RoomController extends Controller
         return view('rooms.index', compact('rooms'));
     }
 
+    public function show(Room $room)
+    {
+        return view('rooms.show', compact('room'));
+    }
+
     public function create()
     {
         return view('rooms.create');
@@ -27,14 +32,9 @@ class RoomController extends Controller
             'is_available' => 'sometimes|boolean',
         ]);
 
-        Room::create($request->only(['number', 'type', 'price', 'is_available']));
+        Room::create($request->all());
 
         return redirect()->route('rooms.index')->with('success', 'Room created successfully.');
-    }
-
-    public function show(Room $room)
-    {
-        return view('rooms.show', compact('room'));
     }
 
     public function edit(Room $room)
@@ -51,7 +51,7 @@ class RoomController extends Controller
             'is_available' => 'sometimes|boolean',
         ]);
 
-        $room->update($request->only(['number', 'type', 'price', 'is_available']));
+        $room->update($request->all());
 
         return redirect()->route('rooms.index')->with('success', 'Room updated successfully.');
     }
@@ -61,5 +61,15 @@ class RoomController extends Controller
         $room->delete();
 
         return redirect()->route('rooms.index')->with('success', 'Room deleted successfully.');
+    }
+
+    public function book(Room $room)
+    {
+        if ($room->is_available) {
+            $room->book();
+            return redirect()->route('rooms.index')->with('success', 'Room booked successfully.');
+        }
+
+        return redirect()->route('rooms.index')->with('error', 'Room is already booked.');
     }
 }
